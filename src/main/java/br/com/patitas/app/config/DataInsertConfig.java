@@ -23,12 +23,6 @@ public class DataInsertConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Owner owner = Owner.builder().name("Vinicius").document("44871365808").build();
-        ownerRepository.save(owner);
-        Pet pet = Pet.builder().owner(owner).age(2).species(Species.CAT).race("Vagabundo").name("Simba").build();
-        petRepository.save(pet);
-        owner = ownerRepository.findById(1L).get();
-        owner.getPets().add(pet);
-        ownerRepository.save(owner);
+
     }
 }

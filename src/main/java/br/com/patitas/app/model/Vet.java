@@ -26,7 +26,7 @@ public class Vet {
     @Column(name = "specialization")
     private Specialization specialization;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vet")
+    @OneToMany(mappedBy = "vet")
     private List<Appointment> appointments = new ArrayList<>();
 
 }

@@ -17,15 +17,12 @@ public class Pet {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumns({
-            @JoinColumn(name = "ownerId", referencedColumnName = "id"),
-            @JoinColumn(name = "ownerName", referencedColumnName = "name")
-    })
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    @ManyToOne
     private Owner owner;
 
-    @JoinColumn(name = "appointmentId", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appointment_id")
+    @ManyToOne
     private Appointment appointment;
 
     @Column(name = "name")

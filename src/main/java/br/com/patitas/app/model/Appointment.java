@@ -18,18 +18,12 @@ public class Appointment {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumns({
-            @JoinColumn(name = "petId", referencedColumnName = "id"),
-            @JoinColumn(name = "petName", referencedColumnName = "name")
-    })
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
     private Pet pet;
 
-    @JoinColumns({
-            @JoinColumn(name = "vetId", referencedColumnName = "id"),
-            @JoinColumn(name = "vetName", referencedColumnName = "name")
-    })
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "vet_id")
     private Vet vet;
 
     @Column(name = "date")

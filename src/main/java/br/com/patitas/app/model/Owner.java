@@ -22,7 +22,7 @@ public class Owner {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    @OneToMany(mappedBy = "owner")
     private List<Pet> pets = new ArrayList<>();
 
     @Column(name = "document")
