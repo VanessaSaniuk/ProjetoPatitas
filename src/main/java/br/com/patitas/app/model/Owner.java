@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_owner")
@@ -15,7 +17,7 @@ import java.util.List;
 public class Owner {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -23,7 +25,7 @@ public class Owner {
     private String name;
 
     @OneToMany(mappedBy = "owner")
-    private List<Pet> pets = new ArrayList<>();
+    private Set<Pet> pets = new HashSet<>();
 
     @Column(name = "document")
     private String document;

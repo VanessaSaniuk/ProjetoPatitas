@@ -4,6 +4,9 @@ import br.com.patitas.app.enums.Species;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "tb_pet")
 @Data
@@ -13,17 +16,16 @@ import lombok.*;
 public class Pet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "owner_id")
     @ManyToOne
+    @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @JoinColumn(name = "appointment_id")
-    @ManyToOne
-    private Appointment appointment;
+    @OneToMany(mappedBy = "pet")
+    private Set<Appointment> appointment = new HashSet<>();
 
     @Column(name = "name")
     private String name;

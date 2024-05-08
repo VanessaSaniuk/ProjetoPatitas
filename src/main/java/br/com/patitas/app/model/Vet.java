@@ -16,7 +16,7 @@ import java.util.List;
 public class Vet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -28,5 +28,8 @@ public class Vet {
 
     @OneToMany(mappedBy = "vet")
     private List<Appointment> appointments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "vet")
+    private List<Schedule> schedules = new ArrayList<>();
 
 }
