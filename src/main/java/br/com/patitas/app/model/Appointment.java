@@ -1,7 +1,9 @@
 package br.com.patitas.app.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
@@ -10,7 +12,6 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Appointment {
 
     @Id
@@ -28,4 +29,7 @@ public class Appointment {
 
     @Column(name = "date")
     private Instant date;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 }

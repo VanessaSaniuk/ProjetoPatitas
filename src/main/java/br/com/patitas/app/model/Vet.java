@@ -2,17 +2,18 @@ package br.com.patitas.app.model;
 
 import br.com.patitas.app.enums.Specialization;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_vet")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Vet {
 
     @Id
@@ -27,9 +28,9 @@ public class Vet {
     private Specialization specialization;
 
     @OneToMany(mappedBy = "vet")
-    private List<Appointment> appointments = new ArrayList<>();
+    private Set<Appointment> appointments = new HashSet<>();
 
     @OneToMany(mappedBy = "vet")
-    private List<Schedule> schedules = new ArrayList<>();
+    private Set<Schedule> schedules = new HashSet<>();
 
 }

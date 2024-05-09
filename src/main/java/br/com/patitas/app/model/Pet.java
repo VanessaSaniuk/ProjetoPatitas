@@ -2,9 +2,10 @@ package br.com.patitas.app.model;
 
 import br.com.patitas.app.enums.Species;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,7 +13,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Pet {
 
     @Id
@@ -20,12 +20,12 @@ public class Pet {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Owner owner;
+//    @ManyToOne
+//    @JoinColumn(name = "owner_id")
+//    private Owner owner;
 
     @OneToMany(mappedBy = "pet")
-    private Set<Appointment> appointment = new HashSet<>();
+    private Set<Appointment> appointment;
 
     @Column(name = "name")
     private String name;
