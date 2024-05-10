@@ -6,6 +6,7 @@ import br.com.patitas.app.model.dto.PetUpdateDTO;
 import br.com.patitas.app.repository.PetRepository;
 import br.com.patitas.app.service.PetService;
 import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
+import br.com.patitas.app.utils.PetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,14 @@ import java.util.List;
 @Service
 public class PetServiceImpl implements PetService {
 
-    private PetRepository petRepository;
+    private final PetRepository petRepository;
+
+    private final PetMapper mapper;
 
     @Autowired
-    public PetServiceImpl(PetRepository petRepository) {
+    public PetServiceImpl(PetRepository petRepository, PetMapper mapper) {
         this.petRepository = petRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -50,8 +54,7 @@ public class PetServiceImpl implements PetService {
         updateSpecies(pet, petUpdateDTO);
         updateRace(pet, petUpdateDTO);
         updateAge(pet, petUpdateDTO);
-        petRepository.save(pet);
-        return pet;
+        return petRepository.save(pet);
     }
 
     @Override

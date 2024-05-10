@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,7 @@ public class Pet {
 //    private Owner owner;
 
     @OneToMany(mappedBy = "pet")
-    private Set<Appointment> appointment;
+    private Set<Appointment> appointments = new HashSet<>();
 
     @Column(name = "name")
     private String name;
