@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.util.Set;
 
 public record PetResponseDTO(
+
         Set<Appointment> appointments,
 
         String name,

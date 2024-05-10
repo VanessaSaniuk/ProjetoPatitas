@@ -15,36 +15,32 @@ import java.util.List;
 @Service
 public class PetServiceImpl implements PetService {
 
-    private final PetRepository petRepository;
+    private final PetRepository repository;
 
     private final PetMapper mapper;
 
     @Autowired
-    public PetServiceImpl(PetRepository petRepository, PetMapper mapper) {
-        this.petRepository = petRepository;
+    public PetServiceImpl(PetRepository repository, PetMapper mapper) {
+        this.repository = repository;
         this.mapper = mapper;
     }
 
     @Override
     public Pet createPet(PetCreationDTO petCreationDTO) {
-        Pet pet = new Pet();
-        pet.setName(petCreationDTO.name());
-        pet.setSpecies(petCreationDTO.species());
-        pet.setRace(petCreationDTO.race());
-        pet.setAge(petCreationDTO.age());
-        return petRepository.save(pet);
+        Pet pet = mapper.creationDTOtoPet(petCreationDTO);
+        return repository.save(pet);
     }
 
     @Override
     public Pet findById(Long id) {
-        return petRepository
+        return repository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found by ID: " + id));
     }
 
     @Override
     public List<Pet> findAll() {
-        return petRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
@@ -54,12 +50,12 @@ public class PetServiceImpl implements PetService {
         updateSpecies(pet, petUpdateDTO);
         updateRace(pet, petUpdateDTO);
         updateAge(pet, petUpdateDTO);
-        return petRepository.save(pet);
+        return repository.save(pet);
     }
 
     @Override
     public void deleteById(Long id) {
-        petRepository.deleteById(findById(id).getId());
+        repository.deleteById(findById(id).getId());
     }
 
     private void updateName(Pet pet, PetUpdateDTO petUpdateDTO) {

@@ -28,6 +28,10 @@ public class Schedule {
     @Column(name = "end_time")
     private Instant endTime;
 
+    @OneToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
+
     @ManyToOne
     @JoinColumn(name = "vet_id")
     private Vet vet;

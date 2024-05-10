@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @Entity
 @Table(name = "tb_appointment")
 @Data
@@ -27,8 +25,9 @@ public class Appointment {
     @JoinColumn(name = "vet_id")
     private Vet vet;
 
-    @Column(name = "date")
-    private Instant date;
+    @OneToOne
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 
     @Column(name = "is_active")
     private boolean isActive;
