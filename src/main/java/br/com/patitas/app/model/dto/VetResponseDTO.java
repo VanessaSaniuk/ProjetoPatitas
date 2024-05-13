@@ -1,8 +1,7 @@
 package br.com.patitas.app.model.dto;
 
 import br.com.patitas.app.enums.Specialization;
-import br.com.patitas.app.model.Appointment;
-import br.com.patitas.app.model.Schedule;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Set;
 
@@ -12,8 +11,7 @@ public record VetResponseDTO(
 
         Specialization specialization,
 
-        Set<Appointment> appointments,
-
-        Set<Schedule> schedules
+        @JsonIgnoreProperties(value = {"appointment", "vetId"})
+        Set<ScheduleResponseDTO> schedules
 ) {
 }

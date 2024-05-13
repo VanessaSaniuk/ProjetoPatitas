@@ -8,24 +8,23 @@ import br.com.patitas.app.repository.VetRepository;
 import br.com.patitas.app.service.VetService;
 import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
 import br.com.patitas.app.utils.VetMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class VetServiceImpl implements VetService {
 
     private final VetRepository repository;
 
-    private final ScheduleRepository scheduleRepository;
-
     private final VetMapper mapper;
 
     @Autowired
-    public VetServiceImpl(VetRepository repository, ScheduleRepository scheduleRepository, VetMapper mapper) {
+    public VetServiceImpl(VetRepository repository, VetMapper mapper) {
         this.repository = repository;
-        this.scheduleRepository = scheduleRepository;
         this.mapper = mapper;
     }
 
@@ -58,6 +57,11 @@ public class VetServiceImpl implements VetService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(findById(id).getId());
+    }
+
+    @Override
+    public Vet saveVet(Vet vet) {
+        return repository.save(vet);
     }
 
     private void updateName(Vet vet, VetUpdateDTO vetUpdateDTO) {

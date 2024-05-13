@@ -7,12 +7,14 @@ import br.com.patitas.app.repository.PetRepository;
 import br.com.patitas.app.service.PetService;
 import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
 import br.com.patitas.app.utils.PetMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class PetServiceImpl implements PetService {
 
     private final PetRepository repository;

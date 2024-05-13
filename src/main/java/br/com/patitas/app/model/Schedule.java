@@ -4,6 +4,7 @@ import br.com.patitas.app.enums.DayOfWeek;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
@@ -20,20 +21,25 @@ public class Schedule {
     private Long id;
 
     @Column(name = "day_of_week")
+    @EqualsAndHashCode.Exclude
     private DayOfWeek dayOfWeek;
 
     @Column(name = "start_time")
+    @EqualsAndHashCode.Exclude
     private Instant startTime;
 
     @Column(name = "end_time")
+    @EqualsAndHashCode.Exclude
     private Instant endTime;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "appointment_id")
+    @EqualsAndHashCode.Exclude
     private Appointment appointment;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vet_id")
+    @EqualsAndHashCode.Exclude
     private Vet vet;
 
 }

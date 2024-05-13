@@ -2,8 +2,6 @@ package br.com.patitas.app.model.dto;
 
 import br.com.patitas.app.enums.Species;
 import br.com.patitas.app.model.Appointment;
-import lombok.Data;
-import lombok.Getter;
 
 import java.util.Set;
 

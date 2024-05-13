@@ -1,8 +1,10 @@
 package br.com.patitas.app.model;
 
+import br.com.patitas.app.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -17,18 +19,22 @@ public class Appointment {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pet_id")
+    @EqualsAndHashCode.Exclude
     private Pet pet;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vet_id")
+    @EqualsAndHashCode.Exclude
     private Vet vet;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "schedule_id")
+    @EqualsAndHashCode.Exclude
     private Schedule schedule;
 
-    @Column(name = "is_active")
-    private boolean isActive;
+    @Column(name = "status")
+    @EqualsAndHashCode.Exclude
+    private AppointmentStatus status;
 }

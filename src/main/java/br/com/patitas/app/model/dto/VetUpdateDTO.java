@@ -1,7 +1,6 @@
 package br.com.patitas.app.model.dto;
 
 import br.com.patitas.app.enums.Specialization;
-import br.com.patitas.app.model.Schedule;
 import jakarta.validation.constraints.Size;
 
 public record VetUpdateDTO(

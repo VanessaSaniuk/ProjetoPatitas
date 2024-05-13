@@ -29,7 +29,7 @@ public class VetController {
         this.mapper = mapper;
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<VetResponseDTO> postVet(
             @Valid @RequestBody VetCreationDTO vetCreationDTO
     ) {
@@ -57,6 +57,7 @@ public class VetController {
         List<Vet> vets = service.findAll();
         return ResponseEntity.ok().body(vets.stream().map(mapper::vetToResponseDTO).toList());
     }
+
 
     @PatchMapping("/{id}")
     public ResponseEntity<VetResponseDTO> updateById(

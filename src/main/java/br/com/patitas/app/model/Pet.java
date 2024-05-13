@@ -4,6 +4,7 @@ import br.com.patitas.app.enums.Species;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -25,19 +26,24 @@ public class Pet {
 //    @JoinColumn(name = "owner_id")
 //    private Owner owner;
 
-    @OneToMany(mappedBy = "pet")
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     private Set<Appointment> appointments = new HashSet<>();
 
     @Column(name = "name")
+    @EqualsAndHashCode.Exclude
     private String name;
 
     @Column(name = "species")
+    @EqualsAndHashCode.Exclude
     private Species species;
 
     @Column(name = "race")
+    @EqualsAndHashCode.Exclude
     private String race;
 
     @Column(name = "age")
+    @EqualsAndHashCode.Exclude
     private Integer age;
 
 }

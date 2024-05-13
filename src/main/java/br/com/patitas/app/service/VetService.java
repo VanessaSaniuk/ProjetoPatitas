@@ -18,4 +18,5 @@ public interface VetService {
 
     void deleteById(Long id);
 
+    Vet saveVet(Vet vet);
 }

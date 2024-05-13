@@ -4,6 +4,7 @@ import br.com.patitas.app.enums.Specialization;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -21,16 +22,22 @@ public class Vet {
     @Column(name = "id")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @Column(name = "name")
     private String name;
 
+    @EqualsAndHashCode.Exclude
     @Column(name = "specialization")
     private Specialization specialization;
 
-    @OneToMany(mappedBy = "vet")
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "vet", cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<>();
 
-    @OneToMany(mappedBy = "vet")
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "vet", cascade = CascadeType.ALL)
     private Set<Schedule> schedules = new HashSet<>();
+
+
 
 }
