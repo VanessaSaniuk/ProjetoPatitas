@@ -1,6 +1,6 @@
 package br.com.patitas.app.model;
 
-import br.com.patitas.app.enums.DayOfWeek;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +20,6 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "day_of_week")
-    @EqualsAndHashCode.Exclude
-    private DayOfWeek dayOfWeek;
-
     @Column(name = "start_time")
     @EqualsAndHashCode.Exclude
     private Instant startTime;
@@ -32,14 +28,15 @@ public class Schedule {
     @EqualsAndHashCode.Exclude
     private Instant endTime;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "appointment_id")
-    @EqualsAndHashCode.Exclude
-    private Appointment appointment;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vet_id")
     @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties(value = {"schedules", "appointments"})
     private Vet vet;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "appointment_id")
+    @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties(value = {"schedule", "vet"})
+    private Appointment appointment;
 }

@@ -1,6 +1,7 @@
 package br.com.patitas.app.model;
 
 import br.com.patitas.app.enums.Specialization;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,12 +33,11 @@ public class Vet {
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "vet", cascade = CascadeType.ALL)
-    private Set<Appointment> appointments = new HashSet<>();
+    @JsonIgnoreProperties(value = {"vet", "appointment"})
+    private Set<Schedule> schedules = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "vet", cascade = CascadeType.ALL)
-    private Set<Schedule> schedules = new HashSet<>();
-
-
-
+    @JsonIgnoreProperties(value = {"vet"})
+    private Set<Appointment> appointments = new HashSet<>();
 }

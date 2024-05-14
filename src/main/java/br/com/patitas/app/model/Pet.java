@@ -1,6 +1,7 @@
 package br.com.patitas.app.model;
 
 import br.com.patitas.app.enums.Species;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,14 +23,6 @@ public class Pet {
     @Column(name = "id")
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "owner_id")
-//    private Owner owner;
-
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    private Set<Appointment> appointments = new HashSet<>();
-
     @Column(name = "name")
     @EqualsAndHashCode.Exclude
     private String name;
@@ -46,4 +39,8 @@ public class Pet {
     @EqualsAndHashCode.Exclude
     private Integer age;
 
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties(value = {"pet"})
+    private Set<Appointment> appointments = new HashSet<>();
 }

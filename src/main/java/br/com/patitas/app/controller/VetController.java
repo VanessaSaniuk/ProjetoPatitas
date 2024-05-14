@@ -2,10 +2,8 @@ package br.com.patitas.app.controller;
 
 import br.com.patitas.app.model.Vet;
 import br.com.patitas.app.model.dto.VetCreationDTO;
-import br.com.patitas.app.model.dto.VetResponseDTO;
 import br.com.patitas.app.model.dto.VetUpdateDTO;
 import br.com.patitas.app.service.VetService;
-import br.com.patitas.app.utils.VetMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +19,13 @@ public class VetController {
 
     private final VetService service;
 
-    private final VetMapper mapper;
-
     @Autowired
-    public VetController(VetService service, VetMapper mapper) {
+    public VetController(VetService service) {
         this.service = service;
-        this.mapper = mapper;
     }
 
     @PostMapping()
-    public ResponseEntity<VetResponseDTO> postVet(
+    public ResponseEntity<Vet> postVet(
             @Valid @RequestBody VetCreationDTO vetCreationDTO
     ) {
         Vet vet = service.createVet(vetCreationDTO);
@@ -41,31 +36,30 @@ public class VetController {
                 .buildAndExpand(vet.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).body(mapper.vetToResponseDTO(vet));
+        return ResponseEntity.created(uri).body(vet);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VetResponseDTO> getById(
+    public ResponseEntity<Vet> getById(
             @PathVariable Long id
     ) {
         Vet vet = service.findById(id);
-        return ResponseEntity.ok().body(mapper.vetToResponseDTO(vet));
+        return ResponseEntity.ok().body(vet);
     }
 
     @GetMapping
-    public ResponseEntity<List<VetResponseDTO>> getAllById() {
+    public ResponseEntity<List<Vet>> getAllById() {
         List<Vet> vets = service.findAll();
-        return ResponseEntity.ok().body(vets.stream().map(mapper::vetToResponseDTO).toList());
+        return ResponseEntity.ok().body(vets);
     }
 
-
     @PatchMapping("/{id}")
-    public ResponseEntity<VetResponseDTO> updateById(
+    public ResponseEntity<Vet> updateById(
             @PathVariable Long id,
             @Valid @RequestBody VetUpdateDTO vetUpdateDTO
     ) {
         Vet vet = service.updateVetById(id, vetUpdateDTO);
-        return ResponseEntity.ok().body(mapper.vetToResponseDTO(vet));
+        return ResponseEntity.ok().body(vet);
     }
 
     @DeleteMapping("/{id}")

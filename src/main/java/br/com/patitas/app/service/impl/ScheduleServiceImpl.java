@@ -7,9 +7,8 @@ import br.com.patitas.app.repository.ScheduleRepository;
 import br.com.patitas.app.repository.VetRepository;
 import br.com.patitas.app.service.ScheduleService;
 import br.com.patitas.app.service.VetService;
-import br.com.patitas.app.service.exceptions.ResourceDuplicatedException;
 import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
-import jakarta.transaction.Transactional;
+import br.com.patitas.app.service.exceptions.ScheduleDuplicatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-@Transactional
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository repository;
@@ -33,19 +31,24 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule createSchedule(ScheduleCreationDTO scheduleCreationDTO) {
+
         Schedule schedule = new Schedule();
-        schedule.setDayOfWeek(scheduleCreationDTO.dayOfWeek());
+
         schedule.setStartTime(scheduleCreationDTO.startTime());
         schedule.setEndTime(scheduleCreationDTO.endTime());
+
         Vet vet = vetRepository
                 .findById(scheduleCreationDTO.vetId())
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Vet not found by ID: " + scheduleCreationDTO.vetId())
                 );
+
         verifyScheduleDuplicate(schedule, vet);
+
         schedule.setVet(vet);
+
         vet.getSchedules().add(schedule);
-        vetRepository.save(vet);
+
         return repository.save(schedule);
     }
 
@@ -67,10 +70,18 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     private void verifyScheduleDuplicate(Schedule schedule, Vet vet) {
+
         Set<Schedule> schedules = vet.getSchedules();
-        Optional<Schedule> optional = schedules.stream().filter(x -> x.getStartTime() == schedule.getStartTime() || x.getEndTime().equals(schedule.getEndTime())).findAny();
+
+        Optional<Schedule> optional = schedules
+                .stream()
+                .filter(
+                        x -> x.getStartTime().equals(schedule.getStartTime())
+                                || x.getEndTime().equals(schedule.getEndTime())
+                ).findAny();
+
         if (optional.isPresent()) {
-            throw new ResourceDuplicatedException("Schedule with specified time already present in the Data Base");
+            throw new ScheduleDuplicatedException("Schedule with specified time already present in the Data Base");
         }
     }
 }

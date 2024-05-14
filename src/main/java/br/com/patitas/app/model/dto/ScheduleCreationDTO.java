@@ -1,16 +1,14 @@
 package br.com.patitas.app.model.dto;
 
-import br.com.patitas.app.enums.DayOfWeek;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 
 public record ScheduleCreationDTO(
-
-        @NotNull
-        @JsonProperty("day_of_week")
-        DayOfWeek dayOfWeek,
 
         @FutureOrPresent
         @NotNull

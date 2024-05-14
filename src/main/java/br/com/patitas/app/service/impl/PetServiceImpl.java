@@ -6,30 +6,34 @@ import br.com.patitas.app.model.dto.PetUpdateDTO;
 import br.com.patitas.app.repository.PetRepository;
 import br.com.patitas.app.service.PetService;
 import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
-import br.com.patitas.app.utils.PetMapper;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Transactional
 public class PetServiceImpl implements PetService {
 
     private final PetRepository repository;
 
-    private final PetMapper mapper;
-
     @Autowired
-    public PetServiceImpl(PetRepository repository, PetMapper mapper) {
+    public PetServiceImpl(PetRepository repository) {
         this.repository = repository;
-        this.mapper = mapper;
     }
 
     @Override
     public Pet createPet(PetCreationDTO petCreationDTO) {
-        Pet pet = mapper.creationDTOtoPet(petCreationDTO);
+
+        Pet pet = new Pet();
+
+        pet.setName(petCreationDTO.name());
+
+        pet.setRace(petCreationDTO.race());
+
+        pet.setSpecies(petCreationDTO.species());
+
+        pet.setAge(petCreationDTO.age());
+
         return repository.save(pet);
     }
 
@@ -47,11 +51,17 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet updatePetById(Long id, PetUpdateDTO petUpdateDTO) {
+
         Pet pet = findById(id);
+
         updateName(pet, petUpdateDTO);
+
         updateSpecies(pet, petUpdateDTO);
+
         updateRace(pet, petUpdateDTO);
+
         updateAge(pet, petUpdateDTO);
+
         return repository.save(pet);
     }
 

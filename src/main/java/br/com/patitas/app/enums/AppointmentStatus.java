@@ -4,4 +4,4 @@ public enum AppointmentStatus {
     ACTIVE,
     CANCELLED,
     ENDED
-    }
+}
