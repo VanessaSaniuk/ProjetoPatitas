@@ -20,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -190,10 +188,25 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<Appointment> appointments = findAll();
 
-        List<Vet> vets = appointments.stream().map(Appointment::getVet).toList();
+        List<Vet> vets = appointments
+                .stream()
+                .map(Appointment::getVet)
+                .toList();
 
-        return vets.stream()
-                .collect(Collectors.groupingBy(Vet::getSpecialization, Collectors.counting()));
+        Map<Specialization, Long> specializationsCount = vets
+                .stream()
+                .collect(
+                        Collectors.groupingBy(Vet::getSpecialization, Collectors.counting())
+                );
+
+        return specializationsCount.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
     }
 
     private Schedule findValidSchedule(Vet vet, Instant date) {
