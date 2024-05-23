@@ -1,0 +1,203 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ScheduleServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.com.patitas.app.service.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: ScheduleServiceImpl (br.com.patitas.app.service.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ScheduleServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89,3%
+  </span>
+  <span class="absValue">
+    (25/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package br.com.patitas.app.service.impl;
+&nbsp;
+&nbsp;import br.com.patitas.app.model.Schedule;
+&nbsp;import br.com.patitas.app.model.Vet;
+&nbsp;import br.com.patitas.app.model.dto.ScheduleCreationDTO;
+&nbsp;import br.com.patitas.app.repository.ScheduleRepository;
+&nbsp;import br.com.patitas.app.repository.VetRepository;
+&nbsp;import br.com.patitas.app.service.ScheduleService;
+&nbsp;import br.com.patitas.app.service.VetService;
+&nbsp;import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
+&nbsp;import br.com.patitas.app.service.exceptions.ScheduleDuplicatedException;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class ScheduleServiceImpl implements ScheduleService {
+&nbsp;
+&nbsp;    private final ScheduleRepository repository;
+&nbsp;
+&nbsp;    private final VetRepository vetRepository;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public ScheduleServiceImpl(ScheduleRepository repository, VetService vetService, VetRepository vetRepository) {</b>
+<b class="fc">&nbsp;        this.repository = repository;</b>
+<b class="fc">&nbsp;        this.vetRepository = vetRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Schedule createSchedule(ScheduleCreationDTO scheduleCreationDTO) {
+&nbsp;
+<b class="fc">&nbsp;        Schedule schedule = new Schedule();</b>
+&nbsp;
+<b class="fc">&nbsp;        schedule.setStartTime(scheduleCreationDTO.startTime());</b>
+<b class="fc">&nbsp;        schedule.setEndTime(scheduleCreationDTO.endTime());</b>
+&nbsp;
+<b class="fc">&nbsp;        Vet vet = vetRepository</b>
+<b class="fc">&nbsp;                .findById(scheduleCreationDTO.vetId())</b>
+<b class="fc">&nbsp;                .orElseThrow(</b>
+<b class="fc">&nbsp;                        () -&gt; new ResourceNotFoundException(&quot;Vet not found by ID: &quot; + scheduleCreationDTO.vetId())</b>
+&nbsp;                );
+&nbsp;
+<b class="fc">&nbsp;        verifyScheduleDuplicate(schedule, vet);</b>
+&nbsp;
+<b class="fc">&nbsp;        schedule.setVet(vet);</b>
+&nbsp;
+<b class="fc">&nbsp;        vet.getSchedules().add(schedule);</b>
+&nbsp;
+<b class="fc">&nbsp;        return repository.save(schedule);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Schedule findById(Long id) {
+<b class="fc">&nbsp;        return repository</b>
+<b class="fc">&nbsp;                .findById(id)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Vet not found by ID: &quot; + id));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Schedule&gt; findAll() {
+<b class="fc">&nbsp;        return repository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void deleteById(Long id) {
+<b class="fc">&nbsp;        repository.deleteById(findById(id).getId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void verifyScheduleDuplicate(Schedule schedule, Vet vet) {
+&nbsp;
+<b class="fc">&nbsp;        Set&lt;Schedule&gt; schedules = vet.getSchedules();</b>
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;Schedule&gt; optional = schedules</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="fc">&nbsp;                .filter(</b>
+<b class="nc">&nbsp;                        x -&gt; x.getStartTime().equals(schedule.getStartTime())</b>
+<b class="nc">&nbsp;                                || x.getEndTime().equals(schedule.getEndTime())</b>
+<b class="fc">&nbsp;                ).findAny();</b>
+&nbsp;
+<b class="pc">&nbsp;        if (optional.isPresent()) {</b>
+<b class="nc">&nbsp;            throw new ScheduleDuplicatedException(&quot;Schedule with specified time already present in the Data Base&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-22 09:02</div>
+</div>
+</body>
+</html>

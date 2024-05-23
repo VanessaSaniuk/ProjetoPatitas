@@ -1,0 +1,203 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Schedule</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.com.patitas.app.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Schedule (br.com.patitas.app.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Schedule</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7,1%
+  </span>
+  <span class="absValue">
+    (1/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Schedule$HibernateInstantiator$0PTLgjqK</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateInstantiator$9qzgRg0I</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateInstantiator$IXaQoPtu</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateInstantiator$SVmb33aA</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateInstantiator$UoeSNKHg</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateProxy$88XlMlDM</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateProxy$gYhac3Wl</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateProxy$pRUf7ReN</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateProxy$WJZXuWs1</td>
+  </tr>
+  <tr>
+    <td class="name">Schedule$HibernateProxy$XR2ufnkh</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7,1%
+  </span>
+  <span class="absValue">
+    (1/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package br.com.patitas.app.model;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Data;
+&nbsp;import lombok.EqualsAndHashCode;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+&nbsp;import java.time.Instant;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;tb_schedule&quot;)
+<b class="pc">&nbsp;@Data</b>
+<b class="fc">&nbsp;@NoArgsConstructor</b>
+<b class="fc">&nbsp;@AllArgsConstructor</b>
+&nbsp;public class Schedule {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+<b class="fc">&nbsp;    private Long id;</b>
+&nbsp;
+&nbsp;    @Column(name = &quot;start_time&quot;)
+&nbsp;    @EqualsAndHashCode.Exclude
+<b class="fc">&nbsp;    private Instant startTime;</b>
+&nbsp;
+&nbsp;    @Column(name = &quot;end_time&quot;)
+&nbsp;    @EqualsAndHashCode.Exclude
+<b class="fc">&nbsp;    private Instant endTime;</b>
+&nbsp;
+&nbsp;    @ManyToOne(cascade = CascadeType.ALL)
+&nbsp;    @JoinColumn(name = &quot;vet_id&quot;)
+&nbsp;    @EqualsAndHashCode.Exclude
+&nbsp;    @JsonIgnoreProperties(value = {&quot;schedules&quot;, &quot;appointments&quot;})
+<b class="fc">&nbsp;    private Vet vet;</b>
+&nbsp;
+&nbsp;    @OneToOne(cascade = CascadeType.ALL)
+&nbsp;    @JoinColumn(name = &quot;appointment_id&quot;)
+&nbsp;    @EqualsAndHashCode.Exclude
+&nbsp;    @JsonIgnoreProperties(value = {&quot;schedule&quot;, &quot;vet&quot;})
+<b class="nc">&nbsp;    private Appointment appointment;</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-22 09:02</div>
+</div>
+</body>
+</html>

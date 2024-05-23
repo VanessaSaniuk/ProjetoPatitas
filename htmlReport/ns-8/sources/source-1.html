@@ -1,0 +1,346 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AppointmentServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.com.patitas.app.service.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: AppointmentServiceImpl (br.com.patitas.app.service.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AppointmentServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    63,2%
+  </span>
+  <span class="absValue">
+    (12/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    41,7%
+  </span>
+  <span class="absValue">
+    (5/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    56,3%
+  </span>
+  <span class="absValue">
+    (49/87)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package br.com.patitas.app.service.impl;
+&nbsp;
+&nbsp;import br.com.patitas.app.enums.AppointmentStatus;
+&nbsp;import br.com.patitas.app.enums.Specialization;
+&nbsp;import br.com.patitas.app.model.Appointment;
+&nbsp;import br.com.patitas.app.model.Pet;
+&nbsp;import br.com.patitas.app.model.Schedule;
+&nbsp;import br.com.patitas.app.model.Vet;
+&nbsp;import br.com.patitas.app.model.dto.AppointmentCreationDTO;
+&nbsp;import br.com.patitas.app.model.dto.AppointmentUpdateDTO;
+&nbsp;import br.com.patitas.app.repository.AppointmentRepository;
+&nbsp;import br.com.patitas.app.repository.PetRepository;
+&nbsp;import br.com.patitas.app.repository.ScheduleRepository;
+&nbsp;import br.com.patitas.app.repository.VetRepository;
+&nbsp;import br.com.patitas.app.service.AppointmentService;
+&nbsp;import br.com.patitas.app.service.exceptions.AppointmentStatusException;
+&nbsp;import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
+&nbsp;import br.com.patitas.app.service.exceptions.ScheduleAlreadyUsedException;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.time.Instant;
+&nbsp;import java.util.*;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class AppointmentServiceImpl implements AppointmentService {
+&nbsp;
+&nbsp;    private final AppointmentRepository repository;
+&nbsp;
+&nbsp;    private final PetRepository petRepository;
+&nbsp;
+&nbsp;    private final VetRepository vetRepository;
+&nbsp;
+&nbsp;    private final ScheduleRepository scheduleRepository;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public AppointmentServiceImpl(AppointmentRepository repository, PetRepository petRepository, VetRepository vetRepository, ScheduleRepository scheduleRepository) {</b>
+<b class="fc">&nbsp;        this.repository = repository;</b>
+<b class="fc">&nbsp;        this.petRepository = petRepository;</b>
+<b class="fc">&nbsp;        this.vetRepository = vetRepository;</b>
+<b class="fc">&nbsp;        this.scheduleRepository = scheduleRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Appointment createAppointment(AppointmentCreationDTO appointmentCreationDTO) {
+&nbsp;
+<b class="fc">&nbsp;        Appointment appointment = new Appointment();</b>
+&nbsp;
+<b class="fc">&nbsp;        Pet pet = petRepository</b>
+<b class="fc">&nbsp;                .findById(appointmentCreationDTO.petId())</b>
+<b class="fc">&nbsp;                .orElseThrow(</b>
+<b class="fc">&nbsp;                        () -&gt; new ResourceNotFoundException(&quot;Pet not found by ID: &quot; + appointmentCreationDTO.petId())</b>
+&nbsp;                );
+&nbsp;
+<b class="nc">&nbsp;        appointment.setPet(pet);</b>
+&nbsp;
+<b class="nc">&nbsp;        pet.getAppointments().add(appointment);</b>
+&nbsp;
+<b class="nc">&nbsp;        Vet vet = vetRepository</b>
+<b class="nc">&nbsp;                .findById(appointmentCreationDTO.vetId())</b>
+<b class="nc">&nbsp;                .orElseThrow(</b>
+<b class="nc">&nbsp;                        () -&gt; new ResourceNotFoundException(&quot;Vet not found by ID: &quot; + appointmentCreationDTO.vetId())</b>
+&nbsp;                );
+&nbsp;
+<b class="nc">&nbsp;        appointment.setVet(vet);</b>
+&nbsp;
+<b class="nc">&nbsp;        vet.getAppointments().add(appointment);</b>
+&nbsp;
+<b class="nc">&nbsp;        Schedule schedule = findValidSchedule(vet, appointmentCreationDTO.schedule());</b>
+&nbsp;
+<b class="nc">&nbsp;        appointment.setSchedule(schedule);</b>
+&nbsp;
+<b class="nc">&nbsp;        schedule.setAppointment(appointment);</b>
+&nbsp;
+<b class="nc">&nbsp;        appointment.setStatus(AppointmentStatus.ACTIVE);</b>
+&nbsp;
+<b class="nc">&nbsp;        return repository.save(appointment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Appointment findById(Long id) {
+<b class="fc">&nbsp;        return repository.findById(id)</b>
+<b class="fc">&nbsp;                .orElseThrow(</b>
+<b class="nc">&nbsp;                        () -&gt; new ResourceNotFoundException(&quot;Appointment not found by ID: &quot; + id)</b>
+&nbsp;                );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Appointment&gt; findAll() {
+<b class="fc">&nbsp;        return repository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Appointment updateById(Long id, AppointmentUpdateDTO appointmentUpdateDTO) {
+&nbsp;
+<b class="nc">&nbsp;        Appointment appointment = findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        Vet vet = vetRepository</b>
+<b class="nc">&nbsp;                .findById(appointment.getVet().getId())</b>
+<b class="nc">&nbsp;                .orElseThrow(</b>
+<b class="nc">&nbsp;                        () -&gt; new ResourceNotFoundException(&quot;Vet not found by ID: &quot; + appointment.getVet().getId())</b>
+&nbsp;                );
+&nbsp;
+<b class="nc">&nbsp;        Schedule schedule = appointment.getSchedule();</b>
+&nbsp;
+<b class="nc">&nbsp;        Schedule newSchedule = findValidSchedule(vet, appointmentUpdateDTO.schedule());</b>
+&nbsp;
+<b class="nc">&nbsp;        schedule.setAppointment(null);</b>
+&nbsp;
+<b class="nc">&nbsp;        appointment.setSchedule(null);</b>
+&nbsp;
+<b class="nc">&nbsp;        scheduleRepository.save(schedule);</b>
+&nbsp;
+<b class="nc">&nbsp;        appointment.setSchedule(newSchedule);</b>
+&nbsp;
+<b class="nc">&nbsp;        newSchedule.setAppointment(appointment);</b>
+&nbsp;
+<b class="nc">&nbsp;        return repository.save(appointment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Appointment cancelAppointmentById(Long id) {
+&nbsp;
+<b class="fc">&nbsp;        Appointment appointment = findById(id);</b>
+&nbsp;
+<b class="pc">&nbsp;        if (appointment.getStatus() != AppointmentStatus.ACTIVE) {</b>
+<b class="nc">&nbsp;            throw new AppointmentStatusException(&quot;Can&#39;t modify appointment status if isn&#39;t active&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Schedule schedule = appointment.getSchedule();</b>
+&nbsp;
+<b class="fc">&nbsp;        appointment.setSchedule(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        schedule.setAppointment(null);</b>
+&nbsp;
+<b class="fc">&nbsp;        appointment.setStatus(AppointmentStatus.CANCELLED);</b>
+&nbsp;
+<b class="fc">&nbsp;        return repository.save(appointment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Appointment endAppointmentById(Long id) {
+&nbsp;
+<b class="fc">&nbsp;        Appointment appointment = findById(id);</b>
+&nbsp;
+<b class="pc">&nbsp;        if (appointment.getStatus() != AppointmentStatus.ACTIVE) {</b>
+<b class="nc">&nbsp;            throw new AppointmentStatusException(&quot;Can&#39;t modify appointment status if isn&#39;t active&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        appointment.setStatus(AppointmentStatus.ENDED);</b>
+&nbsp;
+<b class="fc">&nbsp;        return repository.save(appointment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void deleteById(Long id) {
+<b class="fc">&nbsp;        repository.deleteById(findById(id).getId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Appointment&gt; findAllActive() {
+<b class="fc">&nbsp;        return repository.findAll()</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="pc">&nbsp;                .filter(x -&gt; x.getStatus() == AppointmentStatus.ACTIVE)</b>
+<b class="fc">&nbsp;                .toList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Appointment&gt; findAllCancelled() {
+<b class="fc">&nbsp;        return repository.findAll()</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="pc">&nbsp;                .filter(x -&gt; x.getStatus() == AppointmentStatus.CANCELLED)</b>
+<b class="fc">&nbsp;                .toList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Appointment&gt; findAllEnded() {
+<b class="fc">&nbsp;        return repository.findAll()</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="pc">&nbsp;                .filter(x -&gt; x.getStatus() == AppointmentStatus.ENDED)</b>
+<b class="fc">&nbsp;                .toList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Map&lt;Specialization, Long&gt; countSpecialization() {
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Appointment&gt; appointments = findAll();</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Vet&gt; vets = appointments</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="fc">&nbsp;                .map(Appointment::getVet)</b>
+<b class="fc">&nbsp;                .toList();</b>
+&nbsp;
+<b class="fc">&nbsp;        Map&lt;Specialization, Long&gt; specializationsCount = vets</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="fc">&nbsp;                .collect(</b>
+<b class="fc">&nbsp;                        Collectors.groupingBy(Vet::getSpecialization, Collectors.counting())</b>
+&nbsp;                );
+&nbsp;
+<b class="fc">&nbsp;        return specializationsCount.entrySet().stream()</b>
+<b class="fc">&nbsp;                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))</b>
+<b class="fc">&nbsp;                .collect(Collectors.toMap(</b>
+&nbsp;                        Map.Entry::getKey,
+&nbsp;                        Map.Entry::getValue,
+<b class="nc">&nbsp;                        (e1, e2) -&gt; e1,</b>
+&nbsp;                        LinkedHashMap::new
+&nbsp;                ));
+&nbsp;    }
+&nbsp;
+&nbsp;    Schedule findValidSchedule(Vet vet, Instant date) {
+&nbsp;
+<b class="nc">&nbsp;        Set&lt;Schedule&gt; schedules = vet.getSchedules();</b>
+&nbsp;
+<b class="nc">&nbsp;        Schedule schedule = schedules.stream()</b>
+<b class="nc">&nbsp;                .filter(x -&gt; x.getStartTime().equals(date)).findFirst()</b>
+<b class="nc">&nbsp;                .orElseThrow(</b>
+<b class="nc">&nbsp;                        () -&gt; new ResourceNotFoundException(&quot;Schedule not found with specified date: &quot; + date)</b>
+&nbsp;                );
+&nbsp;
+<b class="nc">&nbsp;        if (schedule.getAppointment() != null) {</b>
+<b class="nc">&nbsp;            throw new ScheduleAlreadyUsedException(&quot;Schedule specified is already being used&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return schedule;</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-22 09:02</div>
+</div>
+</body>
+</html>

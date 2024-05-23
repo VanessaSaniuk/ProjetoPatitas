@@ -1,0 +1,111 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AppointmentService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.com.patitas.app.service</a>
+</div>
+
+<h1>Coverage Summary for Class: AppointmentService (br.com.patitas.app.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">AppointmentService$MockitoMock$FYD5dU4r</td>
+  </tr>
+  <tr>
+    <td class="name">AppointmentService$MockitoMock$FYD5dU4r$auxiliary$4Z0JMlen</td>
+  </tr>
+  <tr>
+    <td class="name">AppointmentService$MockitoMock$FYD5dU4r$auxiliary$GCchxX4i</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package br.com.patitas.app.service;
+&nbsp;
+&nbsp;import br.com.patitas.app.enums.Specialization;
+&nbsp;import br.com.patitas.app.model.Appointment;
+&nbsp;import br.com.patitas.app.model.dto.AppointmentCreationDTO;
+&nbsp;import br.com.patitas.app.model.dto.AppointmentUpdateDTO;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;public interface AppointmentService {
+&nbsp;
+&nbsp;    Appointment createAppointment(AppointmentCreationDTO appointmentCreationDTO);
+&nbsp;
+&nbsp;    Appointment findById(Long id);
+&nbsp;
+&nbsp;    List&lt;Appointment&gt; findAll();
+&nbsp;
+&nbsp;    Appointment updateById(Long id, AppointmentUpdateDTO appointmentUpdateDTO);
+&nbsp;
+&nbsp;    Appointment cancelAppointmentById(Long id);
+&nbsp;
+&nbsp;    Appointment endAppointmentById(Long id);
+&nbsp;
+&nbsp;    void deleteById(Long id);
+&nbsp;
+&nbsp;    List&lt;Appointment&gt; findAllActive();
+&nbsp;
+&nbsp;    List&lt;Appointment&gt; findAllCancelled();
+&nbsp;
+&nbsp;    List&lt;Appointment&gt; findAllEnded();
+&nbsp;
+&nbsp;    Map&lt;Specialization, Long&gt; countSpecialization();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-22 09:02</div>
+</div>
+</body>
+</html>

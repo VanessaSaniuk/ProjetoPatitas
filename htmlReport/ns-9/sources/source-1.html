@@ -1,0 +1,99 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > VetService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.com.patitas.app.service</a>
+</div>
+
+<h1>Coverage Summary for Class: VetService (br.com.patitas.app.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">VetService$MockitoMock$bgZOi9aT</td>
+  </tr>
+  <tr>
+    <td class="name">VetService$MockitoMock$bgZOi9aT$auxiliary$hJOn0QZf</td>
+  </tr>
+  <tr>
+    <td class="name">VetService$MockitoMock$bgZOi9aT$auxiliary$MV4cN0aL</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package br.com.patitas.app.service;
+&nbsp;
+&nbsp;import br.com.patitas.app.model.Vet;
+&nbsp;import br.com.patitas.app.model.dto.VetCreationDTO;
+&nbsp;import br.com.patitas.app.model.dto.VetUpdateDTO;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public interface VetService {
+&nbsp;
+&nbsp;    Vet createVet(VetCreationDTO vetCreationDTO);
+&nbsp;
+&nbsp;    Vet findById(Long id);
+&nbsp;
+&nbsp;    List&lt;Vet&gt; findAll();
+&nbsp;
+&nbsp;    Vet updateVetById(Long id, VetUpdateDTO vetUpdateDTO);
+&nbsp;
+&nbsp;    void deleteById(Long id);
+&nbsp;
+&nbsp;    Vet saveVet(Vet vet);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-22 09:02</div>
+</div>
+</body>
+</html>

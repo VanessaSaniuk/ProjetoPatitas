@@ -209,7 +209,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 ));
     }
 
-    private Schedule findValidSchedule(Vet vet, Instant date) {
+    Schedule findValidSchedule(Vet vet, Instant date) {
 
         Set<Schedule> schedules = vet.getSchedules();
 
