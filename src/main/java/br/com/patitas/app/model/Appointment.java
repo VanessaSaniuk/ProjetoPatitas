@@ -20,19 +20,19 @@ public class Appointment {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "pet_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties(value = "appointments")
     private Pet pet;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "vet_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties(value = {"appointments", "schedules"})
     private Vet vet;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToOne
     @JoinColumn(name = "schedule_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties(value = {"appointment", "vet"})

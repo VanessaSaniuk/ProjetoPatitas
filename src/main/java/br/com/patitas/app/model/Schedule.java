@@ -28,13 +28,13 @@ public class Schedule {
     @EqualsAndHashCode.Exclude
     private Instant endTime;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "vet_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties(value = {"schedules", "appointments"})
     private Vet vet;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "schedule")
     @JoinColumn(name = "appointment_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties(value = {"schedule", "vet"})
