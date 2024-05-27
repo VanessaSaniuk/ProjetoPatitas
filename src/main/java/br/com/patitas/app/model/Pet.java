@@ -18,29 +18,29 @@ import java.util.Set;
 @AllArgsConstructor
 public class Pet {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
 
-    @Column(name = "name")
-    @EqualsAndHashCode.Exclude
-    private String name;
+	@Column(name = "name")
+	@EqualsAndHashCode.Exclude
+	private String name;
 
-    @Column(name = "species")
-    @EqualsAndHashCode.Exclude
-    private Species species;
+	@Column(name = "species")
+	@EqualsAndHashCode.Exclude
+	private Species species;
 
-    @Column(name = "race")
-    @EqualsAndHashCode.Exclude
-    private String race;
+	@Column(name = "race")
+	@EqualsAndHashCode.Exclude
+	private String race;
 
-    @Column(name = "age")
-    @EqualsAndHashCode.Exclude
-    private Integer age;
+	@Column(name = "age")
+	@EqualsAndHashCode.Exclude
+	private Integer age;
 
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @JsonIgnoreProperties(value = {"pet"})
-    private Set<Appointment> appointments = new HashSet<>();
+	@OneToMany(mappedBy = "pet", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties(value = {"pet"})
+	private Set<Appointment> appointments = new HashSet<>();
 }

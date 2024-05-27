@@ -6,12 +6,14 @@ import br.com.patitas.app.model.dto.VetUpdateDTO;
 import br.com.patitas.app.repository.VetRepository;
 import br.com.patitas.app.service.VetService;
 import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class VetServiceImpl implements VetService {
 
     private final VetRepository repository;

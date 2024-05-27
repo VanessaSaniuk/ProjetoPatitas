@@ -9,6 +9,7 @@ import br.com.patitas.app.service.ScheduleService;
 import br.com.patitas.app.service.VetService;
 import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
 import br.com.patitas.app.service.exceptions.ScheduleDuplicatedException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Transactional
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository repository;
@@ -56,7 +58,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public Schedule findById(Long id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vet not found by ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Schedule not found by ID: " + id));
     }
 
     @Override

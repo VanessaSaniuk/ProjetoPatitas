@@ -16,23 +16,23 @@ import lombok.NoArgsConstructor;
 public class Appointment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "pet_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties(value = "appointments")
     private Pet pet;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "vet_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties(value = {"appointments", "schedules"})
     private Vet vet;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "schedule_id")
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties(value = {"appointment", "vet"})

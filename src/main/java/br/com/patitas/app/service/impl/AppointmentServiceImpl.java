@@ -16,6 +16,7 @@ import br.com.patitas.app.service.AppointmentService;
 import br.com.patitas.app.service.exceptions.AppointmentStatusException;
 import br.com.patitas.app.service.exceptions.ResourceNotFoundException;
 import br.com.patitas.app.service.exceptions.ScheduleAlreadyUsedException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository repository;

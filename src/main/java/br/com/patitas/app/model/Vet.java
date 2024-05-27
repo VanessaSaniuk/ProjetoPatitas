@@ -32,12 +32,12 @@ public class Vet {
     private Specialization specialization;
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "vet", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vet", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnoreProperties(value = {"vet", "appointment"})
     private Set<Schedule> schedules = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "vet", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vet", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnoreProperties(value = {"vet"})
     private Set<Appointment> appointments = new HashSet<>();
 }
